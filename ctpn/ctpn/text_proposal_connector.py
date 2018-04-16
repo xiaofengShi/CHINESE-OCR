@@ -3,7 +3,7 @@ import os, sys
 parentdir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(parentdir)
 
-from text_proposal_graph_builder import TextProposalGraphBuilder
+from .text_proposal_graph_builder import TextProposalGraphBuilder
 
 
 class TextProposalConnector:

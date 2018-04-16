@@ -9,7 +9,7 @@ import numpy as np
 import util
 import dataset
 import models.crnn as crnn
-import keys
+import keys_crnn
 from math import *
 import cv2
 
@@ -35,7 +35,7 @@ def dumpRotateImage_(img, degree, pt1, pt2, pt3, pt4):
 
 
 def crnnSource():
-    alphabet = keys.alphabet
+    alphabet = keys_crnn.alphabet
     converter = util.strLabelConverter(alphabet)
     if torch.cuda.is_available() and GPU:
         model = crnn.CRNN(32, 1, len(alphabet) + 1, 256, 1).cuda()

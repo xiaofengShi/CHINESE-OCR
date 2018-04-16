@@ -1,5 +1,10 @@
 # 本文基于tensorflow、keras/pytorch实现对自然场景的文字检测及端到端的OCR中文文字识别
 
+# 参考github仓库
+[TOTAL](https://github.com/chineseocr/chinese-ocr/tree/chinese-ocr-python-3.6)
+[CRNN—pytorch](https://github.com/meijieru/crnn.pytorch.git)
+
+
 # 实现功能
 
 - [x]  文字方向检测 0、90、180、270度检测 

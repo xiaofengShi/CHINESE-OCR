@@ -50,8 +50,9 @@ def crnnRec(im, text_recs, ocrMode='keras', adjust=False):
         degree = degrees(atan2(pt2[1] - pt1[1], pt2[0] - pt1[0]))  ##图像倾斜角度
 
         partImg = dumpRotateImage(im, degree, pt1, pt2, pt3, pt4)
-
+        # 根据ctpn进行识别出的文字区域，进行不同文字区域的crnn识别
         image = Image.fromarray(partImg).convert('L')
+        # 进行识别出的文字识别
         if ocrMode == 'keras':
             sim_pred = ocr(image)
         else:
@@ -107,7 +108,7 @@ def model(img, model='keras', adjust=False, detectAngle=False):
         elif angle == 270:
             im = im.transpose(Image.ROTATE_270)
         img = np.array(im)
-
+    # 进行图像中的文字区域的识别
     text_recs, tmp, img = text_detect(img)
     text_recs = sort_box(text_recs)
     result = crnnRec(img, text_recs, model, adjust=adjust)

@@ -1,3 +1,12 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+# _Author_: xiaofeng
+# Date: 2018-04-16 10:55:15
+# Last Modified by: xiaofeng
+# Last Modified time: 2018-04-16 10:55:15
+'''
+使用keras进行网络训练，速度相对pytorch比较慢
+'''
 import os.path as osp
 import pprint
 import sys, os
@@ -40,6 +49,7 @@ if __name__ == '__main__':
         roidb,
         output_dir=output_dir,
         log_dir=log_dir,
-        pretrained_model='/Users/xiaofeng/Code/Github/dataset/CHINESE_OCR/ctpn/pretrain/VGG_imagenet.npy',
+        pretrained_model=
+        '/Users/xiaofeng/Code/Github/dataset/CHINESE_OCR/ctpn/pretrain/VGG_imagenet.npy',
         max_iters=180000,
         restore=bool(int(0)))

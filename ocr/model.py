@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
 ## 修复K.ctc_decode bug 当大量测试时将GPU显存消耗完，导致错误，用decode 替代
 ###
-import os
-
+import os,sys
+parentdir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(parentdir)
 # from PIL import Image
-import keras.backend  as K
-import keys
+import keras.backend as K
+
+import keys_ocr
 import numpy as np
 from keras.layers import Flatten, BatchNormalization, Permute, TimeDistributed, Dense, Bidirectional, GRU
 from keras.layers import Input, Conv2D, MaxPooling2D, ZeroPadding2D
@@ -43,7 +45,9 @@ def get_model(height, nclass):
     m = ZeroPadding2D(padding=(0, 1))(m)
     m = MaxPooling2D(pool_size=(2, 2), strides=(2, 1), padding='valid', name='pool4')(m)
     m = Conv2D(512, kernel_size=(2, 2), activation='relu', padding='valid', name='conv7')(m)
-
+    # m的输出维度为HWC?
+    # 将输入的维度按照给定模式进行重排，例如，当需要将RNN和CNN网络连接时，可能会用到该层
+    # 将维度转成WHC
     m = Permute((2, 1, 3), name='permute')(m)
     m = TimeDistributed(Flatten(), name='timedistrib')(m)
 
@@ -66,19 +70,20 @@ def get_model(height, nclass):
     return model, basemodel
 
 
-characters = keys.alphabet[:]
-
+characters = keys_ocr.alphabet[:]
 modelPath = os.path.join(os.getcwd(), "ocr/ocr0.2.h5")
+# modelPath = '/Users/xiaofeng/Code/Github/dataset/CHINESE_OCR/save_model/my_model_keras.h5'
 height = 32
-nclass = len(characters)
+nclass=len(characters)+1
 if os.path.exists(modelPath):
-    model, basemodel = get_model(height, nclass + 1)
+    model, basemodel = get_model(height, nclass)
     basemodel.load_weights(modelPath)
+    # model.load_weights(modelPath)
 
 
 def predict(im):
     """
-    
+    输入图片，输出keras模型的识别结果
     """
     im = im.convert('L')
     scale = im.size[1] * 1.0 / 32

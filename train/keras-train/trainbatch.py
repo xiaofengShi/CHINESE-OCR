@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 import dataset
-import keys
+import keys_keras
 import numpy as np
 import torch
 import time
-import os
+import os, sys
+sys.path.insert(0, os.getcwd())
 import tensorflow as tf
 import pydot
 import graphviz
@@ -12,11 +13,9 @@ import keras.backend.tensorflow_backend as KTF
 from keras.callbacks import TensorBoard
 from keras.utils import plot_model
 
-characters = keys.alphabet[:]
+characters = keys_keras.alphabet[:]
 from model import get_model
-
 nclass = len(characters) + 1
-
 trainroot = '../data/lmdb/train'
 valroot = '../data/lmdb/val'
 # modelPath = '../pretrain-models/keras.hdf5'
@@ -27,6 +26,7 @@ imgW = 256
 keep_ratio = False
 random_sample = False
 batchSize = 32
+testSize = 16
 n_len = 50
 loss = 1000
 interval = 50
@@ -45,9 +45,18 @@ if not os.path.exists(SUMMARY_PATH):
 
 model, basemodel = get_model(
     height=imgH, nclass=nclass, learning_rate=LEARNING_RATE)
-config = tf.ConfigProto(intra_op_parallelism_threads=7)
+
+config = tf.ConfigProto(intra_op_parallelism_threads=2)
 config.gpu_options.per_process_gpu_memory_fraction = PERCEPTION
 KTF.set_session(tf.Session(config=config))
+
+# 加载预训练参数
+if os.path.exists(modelPath):
+    # basemodel.load_weights(modelPath)
+    model.load_weights(modelPath)
+
+plot_model(basemodel, to_file='basemodel.png')
+plot_model(model, to_file='model.png')
 
 
 def one_hot(text, length=10, characters=characters):
@@ -61,24 +70,20 @@ def one_hot(text, length=10, characters=characters):
     return label
 
 
+# 导入数据
 if random_sample:
     sampler = dataset.randomSequentialSampler(train_dataset, batchSize)
 else:
     sampler = None
 train_dataset = dataset.lmdbDataset(root=trainroot, target_transform=one_hot)
+# print(len(train_dataset))
 
 test_dataset = dataset.lmdbDataset(
     root=valroot,
     transform=dataset.resizeNormalize((imgW, imgH)),
     target_transform=one_hot)
 
-if os.path.exists(modelPath):
-    # basemodel.load_weights(modelPath)
-    model.load_weights(modelPath)
-
-plot_model(basemodel, to_file='basemodel.png')
-plot_model(model, to_file='model.png')
-
+# 生成训练用数据
 train_loader = torch.utils.data.DataLoader(
     train_dataset,
     batch_size=batchSize,
@@ -88,8 +93,6 @@ train_loader = torch.utils.data.DataLoader(
     collate_fn=dataset.alignCollate(
         imgH=imgH, imgW=imgW, keep_ratio=keep_ratio))
 
-testSize = 16
-# print test_dataset[0]
 test_loader = torch.utils.data.DataLoader(
     test_dataset, batch_size=testSize, shuffle=True, num_workers=int(workers))
 

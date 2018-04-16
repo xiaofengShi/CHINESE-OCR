@@ -1,3 +1,5 @@
+import sys
+sys.path.insert(1, "./crnn")
 import torch.nn as nn
 import utils
 
@@ -11,13 +13,13 @@ class BidirectionalLSTM(nn.Module):
         self.embedding = nn.Linear(nHidden * 2, nOut)
 
     def forward(self, input):
-        recurrent, _ = utils.data_parallel(
-            self.rnn, input, self.ngpu)  # [T, b, h * 2]
+        recurrent, _ = utils.data_parallel(self.rnn, input,
+                                           self.ngpu)  # [T, b, h * 2]
 
         T, b, h = recurrent.size()
         t_rec = recurrent.view(T * b, h)
-        output = utils.data_parallel(
-            self.embedding, t_rec, self.ngpu)  # [T * b, nOut]
+        output = utils.data_parallel(self.embedding, t_rec,
+                                     self.ngpu)  # [T * b, nOut]
         output = output.view(T, b, -1)
 
         return output
@@ -55,21 +57,18 @@ class CRNN(nn.Module):
         cnn.add_module('pooling{0}'.format(1), nn.MaxPool2d(2, 2))  # 128x8x32
         convRelu(2, True)
         convRelu(3)
-        cnn.add_module('pooling{0}'.format(2), nn.MaxPool2d((2, 2),
-                                                            (2, 1),
-                                                            (0, 1)))  # 256x4x16
+        cnn.add_module('pooling{0}'.format(2),
+                       nn.MaxPool2d((2, 2), (2, 1), (0, 1)))  # 256x4x16
         convRelu(4, True)
         convRelu(5)
-        cnn.add_module('pooling{0}'.format(3), nn.MaxPool2d((2, 2),
-                                                            (2, 1),
-                                                            (0, 1)))  # 512x2x16
+        cnn.add_module('pooling{0}'.format(3),
+                       nn.MaxPool2d((2, 2), (2, 1), (0, 1)))  # 512x2x16
         convRelu(6, True)  # 512x1x16
 
         self.cnn = cnn
         self.rnn = nn.Sequential(
             BidirectionalLSTM(512, nh, nh, ngpu),
-            BidirectionalLSTM(nh, nh, nclass, ngpu)
-        )
+            BidirectionalLSTM(nh, nh, nclass, ngpu))
 
     def forward(self, input):
         # conv features
