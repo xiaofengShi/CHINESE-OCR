@@ -1,4 +1,12 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
+# _Author_: xiaofeng
+# Date: 2018-04-22 18:13:46
+# Last Modified by: xiaofeng
+# Last Modified time: 2018-04-22 18:13:46
+'''
+根据给定的图形，分析文字的朝向
+'''
 # from keras.models import load_model
 import numpy as np
 from PIL import Image
@@ -42,10 +50,15 @@ def predict(path=None, img=None):
     elif img is not None:
         im = Image.fromarray(img).convert('RGB')
     w, h = im.size
+    # 对图像进行剪裁
+    # 左上角(int(0.1 * w), int(0.1 * h))
+    # 右下角(w - int(0.1 * w), h - int(0.1 * h))
     xmin, ymin, xmax, ymax = int(0.1 * w), int(
         0.1 * h), w - int(0.1 * w), h - int(0.1 * h)
-    im = im.crop((xmin, ymin, xmax, ymax))  ##剪切图片边缘，清楚边缘噪声
+    im = im.crop((xmin, ymin, xmax, ymax))  ##剪切图片边缘，清除边缘噪声
+    # 对图片进行剪裁之后进行resize成(224,224)
     im = im.resize((224, 224))
+    # 将图像转化成数组形式
     img = np.array(im)
     img = preprocess_input(img.astype(np.float32))
     pred = model.predict(np.array([img]))

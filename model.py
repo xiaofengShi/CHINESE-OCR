@@ -98,9 +98,11 @@ def model(img, model='keras', adjust=False, detectAngle=False):
     """
     angle = 0
     if detectAngle:
-
+        # 进行文字旋转方向检测，分为[0, 90, 180, 270]四种情况
         angle = angle_detect(img=np.copy(img))  ##文字朝向检测
+        print('The angel of this character is:', angle)
         im = Image.fromarray(img)
+        print('Rotate the array of this img!')
         if angle == 90:
             im = im.transpose(Image.ROTATE_90)
         elif angle == 180:
@@ -109,8 +111,10 @@ def model(img, model='keras', adjust=False, detectAngle=False):
             im = im.transpose(Image.ROTATE_270)
         img = np.array(im)
     # 进行图像中的文字区域的识别
-    text_recs, tmp, img = text_detect(img)
+    text_recs, tmp, img=text_detect(img)
+    # 识别区域排列
     text_recs = sort_box(text_recs)
+    # 
     result = crnnRec(img, text_recs, model, adjust=adjust)
     return result, tmp, angle
 

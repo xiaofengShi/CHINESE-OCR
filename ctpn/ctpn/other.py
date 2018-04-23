@@ -11,7 +11,12 @@ def prepare_img(im, mean):
     return im_data
 
 
-def draw_boxes(im, bboxes, is_display=True, color=None, caption="Image", wait=True):
+def draw_boxes(im,
+               bboxes,
+               is_display=True,
+               color=None,
+               caption="Image",
+               wait=True):
     """
         boxes: bounding boxes
     """
@@ -70,6 +75,9 @@ def draw_boxes(im, bboxes, is_display=True, color=None, caption="Image", wait=Tr
         text_recs[index, 7] = y4
         index = index + 1
         # cv2.rectangle(im, tuple(box[:2]), tuple(box[2:4]), c,2)
+        # cv2.waitKey(0)
+        # cv2.imshow('kk', im)
+        cv2.imwrite('/Users/xiaofeng/Code/Github/Chinese-OCR/test/lllll.png',im)
 
     return text_recs, im
 
@@ -96,6 +104,7 @@ def normalize(data):
 
 
 def resize_im(im, scale, max_scale=None):
+    # 按照scale和图片的长宽的最小值的比值作为输入模型的图片的尺寸
     f = float(scale) / min(im.shape[0], im.shape[1])
     if max_scale != None and f * max(im.shape[0], im.shape[1]) > max_scale:
         f = float(max_scale) / max(im.shape[0], im.shape[1])
