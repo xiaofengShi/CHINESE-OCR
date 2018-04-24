@@ -54,8 +54,6 @@ def ctpn(img):
     """
     scale, max_scale = Config.SCALE, Config.MAX_SCALE
     # 对图像进行resize，输出的图像长宽
-    print('original_size',img.shape)
     img, f = resize_im(img, scale=scale, max_scale=max_scale)
-    print('resize',img.shape,f)
     scores, boxes = test_ctpn(sess, net, img)
     return scores, boxes, img
