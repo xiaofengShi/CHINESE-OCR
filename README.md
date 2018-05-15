@@ -14,7 +14,8 @@
 
 
 ## 环境部署
-``` Bash
+``` 
+Bash
 ##GPU环境
 sh setup.sh
 ##CPU环境
@@ -100,7 +101,9 @@ parser.add_argument(
 # 未完待续
 ### tensorflow版本crnn，计划尝试当前的各种trick(dropuout,bn,learning_decay等)
 ```
-可以看到，对于纯文字的识别结果还是阔以的呢，感觉可以在crnn网络在加以改进，现在的crnn中的cnn有点浅，并且rnn层为单层双向+attention，目前正在针对这个地方进行改动，使用迁移学习，以restnet为特征提取层，使用多层双向动态rnn+attention+ctc的机制，将模型加深，目前正在进行模型搭建，结果好的话就发上来，不好的话只能凉凉了~~~~
+可以看到，对于纯文字的识别结果还是阔以的呢，感觉可以在crnn网络在加以改进，现在的crnn中的cnn有点浅，
+并且rnn层为单层双向+attention，目前正在针对这个地方进行改动，使用迁移学习，以restnet为特征提取层，
+使用多层双向动态rnn+attention+ctc的机制，将模型加深，目前正在进行模型搭建，结果好的话就发上来，不好的话只能凉凉了~~~~
 ```
 
 
