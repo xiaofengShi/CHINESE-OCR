@@ -46,7 +46,7 @@ sh setup-python3.sh
 # OCR 端到端识别:CRNN
 ## ocr识别采用GRU+CTC端到到识别技术，实现不分隔识别不定长文字
 提供keras 与pytorch版本的训练代码，在理解keras的基础上，可以切换到pytorch版本，此版本更稳定
-- 此外还添加了tensorflow版本的资源仓库：[TF:LSTM-CTC_loss](https://github.com/ilovin/lstm_ctc_ocr) 
+- 此外参考了了tensorflow版本的资源仓库：[TF:LSTM-CTC_loss](https://github.com/xiaofengShi/CTC_TF) 
 
 # 这个仓库咋用呢
 ## 如果你只是测试一下
