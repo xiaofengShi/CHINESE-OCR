@@ -13,13 +13,13 @@ from PIL import Image
 from keras.applications.vgg16 import preprocess_input, VGG16
 from keras.layers import Dense
 from keras.models import Model
-##编译模型，以较小的学习参数进行训练
+# 编译模型，以较小的学习参数进行训练
 from keras.optimizers import SGD
 
 
 def load():
     vgg = VGG16(weights=None, input_shape=(224, 224, 3))
-    ##修改输出层 3个输出
+    # 修改输出层 3个输出
     x = vgg.layers[-2].output
     predictions_class = Dense(
         4, activation='softmax', name='predictions_class')(x)
@@ -33,7 +33,7 @@ def load():
     return model
 
 
-##加载模型
+# 加载模型
 model = None
 
 
@@ -55,7 +55,7 @@ def predict(path=None, img=None):
     # 右下角(w - int(0.1 * w), h - int(0.1 * h))
     xmin, ymin, xmax, ymax = int(0.1 * w), int(
         0.1 * h), w - int(0.1 * w), h - int(0.1 * h)
-    im = im.crop((xmin, ymin, xmax, ymax))  ##剪切图片边缘，清除边缘噪声
+    im = im.crop((xmin, ymin, xmax, ymax))  # 剪切图片边缘，清除边缘噪声
     # 对图片进行剪裁之后进行resize成(224,224)
     im = im.resize((224, 224))
     # 将图像转化成数组形式

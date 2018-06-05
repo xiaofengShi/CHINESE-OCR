@@ -58,8 +58,8 @@ sh setup-python3.sh
 ### 1 对ctpn进行训练
 * 定位到路径--./ctpn/ctpn/train_net.py
 * 预训练的vgg网络路径[VGG_imagenet.npy](https://pan.baidu.com/s/1JO_ZojA5bkmJZsnxsShgkg)
-将预训练权重下载下来，pretrained_model指向该路径即可
-整个模型的预训练权重[checkpoint](https://pan.baidu.com/s/1aT-vHgq7nvLy4M_T6SwR1Q)
+将预训练权重下载下来，pretrained_model指向该路径即可,
+此外整个模型的预训练权重[checkpoint](https://pan.baidu.com/s/1aT-vHgq7nvLy4M_T6SwR1Q)
 * ctpn数据集[还是百度云](https://pan.baidu.com/s/1NXFmdP_OgRF42xfHXUhBHQ)
 数据集下载完成并解压后，将.ctpn/lib/datasets/pascal_voc.py 文件中的pascal_voc 类中的参数self.devkit_path指向数据集的路径即可
 
