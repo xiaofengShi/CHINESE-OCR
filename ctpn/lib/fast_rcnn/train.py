@@ -38,7 +38,7 @@ class SolverWrapper(object):
 
         # For checkpoint
         self.saver = tf.train.Saver(
-            max_to_keep=100, write_version=tf.train.SaverDef.V2)
+            max_to_keep=1, write_version=tf.train.SaverDef.V2)
         self.writer = tf.summary.FileWriter(
             logdir=logdir, graph=tf.get_default_graph(), flush_secs=5)
 
@@ -146,8 +146,9 @@ class SolverWrapper(object):
         if restore:
             # try:
             print('output_dir:', self.output_dir)
+            # 加载ckpt文件路径，而非指向checkpoint
             ckpt = tf.train.get_checkpoint_state(
-                self.output_dir + '/checkpoint')
+                self.output_dir + '/')
             print(
                 'Restoring from {}...'.format(ckpt.model_checkpoint_path),
                 end=' ')
