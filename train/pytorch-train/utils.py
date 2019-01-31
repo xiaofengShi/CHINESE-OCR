@@ -36,6 +36,7 @@ class strLabelConverter(object):
         # print(length)
         return (torch.IntTensor(text), torch.IntTensor(length))
 
+        '''
         if isinstance(text, str):
             text = [self.dict[char.lower()] for char in text]
             length = [len(text)]
@@ -58,6 +59,7 @@ class strLabelConverter(object):
         if depth:
             return text, len(text)
         return (torch.IntTensor(text), torch.IntTensor(length))
+        '''
 
     def decode(self, t, length, raw=False):
         if length.numel() == 1:
