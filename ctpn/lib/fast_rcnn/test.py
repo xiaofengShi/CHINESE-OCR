@@ -5,7 +5,9 @@
 # Last Modified by: xiaofeng
 # Last Modified time: 2018-04-08 14:31:45
 
-import cv2, os, sys
+import cv2
+import os
+import sys
 import numpy as np
 
 # sys.path.append(os.getcwd())

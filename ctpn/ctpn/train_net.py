@@ -9,7 +9,8 @@
 '''
 import os.path as osp
 import pprint
-import sys, os
+import sys
+import os
 
 # sys.path.append(os.getcwd())
 # this_dir = os.path.dirname(__file__)
@@ -49,7 +50,9 @@ if __name__ == '__main__':
         roidb,
         output_dir=output_dir,
         log_dir=log_dir,
-        pretrained_model=
-        '/Users/xiaofeng/Code/Github/dataset/CHINESE_OCR/ctpn/pretrain/VGG_imagenet.npy',
+        # pretrained_model=
+        # '/Users/xiaofeng/Code/Github/dataset/CHINESE_OCR/ctpn/pretrain/VGG_imagenet.npy',
+        # pretrained_model='/home/xiaofeng/data/ctpn/pretrainde_vgg',
+        pretrained_model=None,
         max_iters=180000,
-        restore=bool(int(0)))
+        restore=bool(int(1)))

@@ -20,9 +20,7 @@ class VGGnet_train(Network):
         self.setup()
 
     def setup(self):
-        # n_classes = 21
         n_classes = cfg.NCLASSES
-        # anchor_scales = [8, 16, 32]
         anchor_scales = cfg.ANCHOR_SCALES
         _feat_stride = [16, ]
         # net frame

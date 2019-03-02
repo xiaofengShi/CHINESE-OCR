@@ -5,7 +5,8 @@
 # Last Modified by: xiaofeng
 # Last Modified time: 2018-04-08 14:40:30
 
-import os, sys
+import os
+import sys
 import numpy as np
 import scipy.sparse
 parentdir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -31,9 +32,10 @@ class pascal_voc(imdb):
         self._image_set = image_set
         # 生成数据集的根目录
         self._devkit_path = self._get_default_path() if devkit_path is None \
-                            else devkit_path
+            else devkit_path
         # 将数据文件保存在仓库之外的位置
-        self._devkit_path = '/Users/xiaofeng/Code/Github/dataset/CHINESE_OCR/ctpn/VOCdevkit2007'
+        # self._devkit_path = '/Users/xiaofeng/Code/Github/dataset/CHINESE_OCR/ctpn/VOCdevkit2007'
+        self._devkit_path = '/home/xiaofeng/data/ctpn/VOCdevkit2007'
         # 得到数据集的目录
         self._data_path = os.path.join(self._devkit_path, 'VOC' + self._year)
 
@@ -63,9 +65,9 @@ class pascal_voc(imdb):
         }
 
         assert os.path.exists(self._devkit_path), \
-                'VOCdevkit path does not exist: {}'.format(self._devkit_path)
+            'VOCdevkit path does not exist: {}'.format(self._devkit_path)
         assert os.path.exists(self._data_path), \
-                'Path does not exist: {}'.format(self._data_path)
+            'Path does not exist: {}'.format(self._data_path)
 
     def image_path_at(self, i):
         """
@@ -80,7 +82,7 @@ class pascal_voc(imdb):
         image_path = os.path.join(self._data_path, 'JPEGImages',
                                   index + self._image_ext)
         assert os.path.exists(image_path), \
-                'Path does not exist: {}'.format(image_path)
+            'Path does not exist: {}'.format(image_path)
         return image_path
 
     def _load_image_set_index(self):
@@ -92,7 +94,7 @@ class pascal_voc(imdb):
         image_set_file = os.path.join(self._data_path, 'ImageSets', 'Main',
                                       self._image_set + '.txt')
         assert os.path.exists(image_set_file), \
-                'Path does not exist: {}'.format(image_set_file)
+            'Path does not exist: {}'.format(image_set_file)
         with open(image_set_file) as f:
             image_index = [x.strip() for x in f.readlines()]
         return image_index
@@ -168,7 +170,7 @@ class pascal_voc(imdb):
         filename = self.config['rpn_file']
         print('loading {}'.format(filename))
         assert os.path.exists(filename), \
-               'rpn data not found at: {}'.format(filename)
+            'rpn data not found at: {}'.format(filename)
         with open(filename, 'rb') as f:
             box_list = pickle.load(f)
         return self.create_roidb_from_box_list(box_list, gt_roidb)
@@ -178,7 +180,7 @@ class pascal_voc(imdb):
             os.path.join(cfg.DATA_DIR, 'selective_search_data',
                          self.name + '.mat'))
         assert os.path.exists(filename), \
-               'Selective search data not found at: {}'.format(filename)
+            'Selective search data not found at: {}'.format(filename)
         raw_data = sio.loadmat(filename)['boxes'].ravel()
 
         box_list = []

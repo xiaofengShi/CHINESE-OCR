@@ -4,7 +4,8 @@ import keys_keras
 import numpy as np
 import torch
 import time
-import os, sys
+import os
+import sys
 sys.path.insert(0, os.getcwd())
 import tensorflow as tf
 import pydot
@@ -34,7 +35,7 @@ LEARNING_RATE = 0.01
 Learning_decay_step = 20000
 PERCEPTION = 0.3
 EPOCH_NUMS = 1000000
-MODEL_PATH = '/Users/xiaofeng/Code/Github/dataset/CHINESE_OCR/save_model/'
+MODEL_PATH = '/Users/xiaofeng/Code/Github/dataset/CHINESE_OCR/save_model'
 LOG_FILE = 'log.txt'
 SUMMARY_PATH = './log/'
 if not os.path.exists(MODEL_PATH):
@@ -106,10 +107,12 @@ for i in range(EPOCH_NUMS):
         Y = np.array(Y)
         Length = int(imgW / 4) - 2
         batch = X.shape[0]
-        X_train, Y_train = [
-            X, Y, np.ones(batch) * Length,
-            np.ones(batch) * n_len
-        ], np.ones(batch)
+        X_train, Y_train = [X, Y,
+                            np.ones(batch) * Length,
+                            np.ones(batch) * n_len], np.ones(batch)
+        print('IMG_SHAPE:', np.shape(X))
+        print('LABEL_SHAPE:', np.shape(Y))
+        # print(np.shape(X_train))
         model.train_on_batch(X_train, Y_train)
         if j % interval == 0:
             times = time.time() - start
@@ -122,8 +125,7 @@ for i in range(EPOCH_NUMS):
             batch = X.shape[0]
             X_val, Y_val = [
                 X, Y, np.ones(batch) * Length,
-                np.ones(batch) * n_len
-            ], np.ones(batch)
+                np.ones(batch) * n_len], np.ones(batch)
             crrentLoss = model.evaluate(X_val, Y_val)
             print('Learning rate is: ', LEARNING_RATE)
             now_time = time.strftime('%Y/%m/%d-%H:%M:%S',
