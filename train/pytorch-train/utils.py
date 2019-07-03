@@ -15,9 +15,28 @@ class strLabelConverter(object):
         for i, char in enumerate(alphabet):
             # NOTE: 0 is reserved for 'blank' required by wrap_ctc
             self.dict[char] = i + 1
+        # print(self.dict)
 
     def encode(self, text, depth=0):
         """Support batch or single str."""
+        length = []
+        result = []
+        for item in text:
+            #FIXME
+            #item = item.decode('utf-8', 'strict')
+            length.append(len(item))
+            # print(len(item))
+            # print(item)
+            for char in item:
+                index = self.dict[char]
+                result.append(index)
+
+        text = result
+        # print(text, length)
+        # print(length)
+        return (torch.IntTensor(text), torch.IntTensor(length))
+
+        '''
         if isinstance(text, str):
             text = [self.dict[char.lower()] for char in text]
             length = [len(text)]
@@ -25,19 +44,22 @@ class strLabelConverter(object):
         if isinstance(text, str):
             text = [self.dict.get(char, 0) for char in text]
             length = [len(text)]
-            ######## add for unicode
+        # add for unicode python2
         # elif isinstance(text, unicode):
-        #     text = [self.dict.get(char, self.dict[u'-']) for char in text]
-        #     length = [len(text)]
+        #    text = [self.dict.get(char, self.dict[u'-']) for char in text]
+        #    length = [len(text)]
 
         elif isinstance(text, collections.Iterable):
             length = [len(text)]
+            # print("length = %s" % length)
             text = ''.join(str(v) for v in text)
+            # print("text = %s" % text)
             text, _ = self.encode(text)
 
         if depth:
             return text, len(text)
         return (torch.IntTensor(text), torch.IntTensor(length))
+        '''
 
     def decode(self, t, length, raw=False):
         if length.numel() == 1:
